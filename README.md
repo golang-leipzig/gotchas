@@ -2,10 +2,11 @@
 
 Go gotchas, surprises, puzzles.
 
-Obligatory readings:
+Other lists and articles:
 
 * [50 Shades of Go: Traps, Gotchas, and Common Mistakes for New Golang Devs](http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/)
 * [Do you make these Go coding mistakes?](https://yourbasic.org/golang/gotcha/)
+* [Common Gotchas in Go](https://deadbeef.me/2018/01/go-gotchas)
 
 # Other gotchas and questions
 
