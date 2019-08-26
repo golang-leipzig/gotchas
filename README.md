@@ -41,6 +41,10 @@ The zero value for a pointer is nil.
 If the return value is pointer to a struct, e.g. `*E` and we return `nil`, we
 do not actually return `nil`.
 
+References:
+
+* [Hiding nil values, understanding why golang fails here](https://stackoverflow.com/questions/29138591/hiding-nil-values-understanding-why-golang-fails-here)
+
 TBC.
 
 ```go
