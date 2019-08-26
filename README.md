@@ -44,6 +44,7 @@ do not actually return `nil`.
 References:
 
 * [Hiding nil values, understanding why golang fails here](https://stackoverflow.com/questions/29138591/hiding-nil-values-understanding-why-golang-fails-here)
+* [https://play.golang.org/p/fj24_qUdm45](https://play.golang.org/p/fj24_qUdm45)
 
 TBC.
 
