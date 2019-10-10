@@ -103,3 +103,27 @@ func main() {
         }
 }
 ```
+
+## Literal initialization of promoted fields
+
+> cannot use promoted field __ in struct literal of type
+
+Example: One GitHub API (v3) wrapper defines different option types. The
+[SearchOptions](https://godoc.org/github.com/google/go-github/github#SearchOptions)
+embed
+a [ListOptions](https://godoc.org/github.com/google/go-github/github#ListOptions)
+type for pagination.
+
+The following would not work: "cannot use promoted field ..."
+
+```go
+opt := &github.SearchOptions{Sort: "stars", PerPage: 10}
+```
+
+Workaround is to create an options value, then assign to the promoted field.
+
+```go
+opt := &github.SearchOptions{Sort: "stars"}
+opt.PerPage = 10
+```
+
