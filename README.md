@@ -104,6 +104,8 @@ func main() {
 }
 ```
 
+A similar example: [play.golang.org/p/ZfY7AN687ah](https://play.golang.org/p/ZfY7AN687ah)
+
 ## Literal initialization of promoted fields
 
 > cannot use promoted field __ in struct literal of type
