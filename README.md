@@ -152,6 +152,6 @@ func main() {
 	**b = 3
 	fmt.Printf("%d", *a***b)
 }
+```
 
 Can you see the result? If not, just [try it out](https://play.golang.org/p/WaEfSLADHwL)!
-```
