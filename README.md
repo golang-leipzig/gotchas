@@ -129,3 +129,29 @@ opt := &github.SearchOptions{Sort: "stars"}
 opt.PerPage = 10
 ```
 
+## Three-star programming in Go
+
+There is the concept of a star in programming languages and the concept of
+a programmer who uses them, e.g.
+[ThreeStarProgrammer](https://wiki.c2.com/?ThreeStarProgrammer).
+
+It's easy to get to three stars in Go using arithmetic and indirection.
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var (
+		a *int = new(int)
+		b      = &a
+	)
+	**b = 3
+	fmt.Printf("%d", *a***b)
+}
+
+Can you see the result? If not, just [try it out](https://play.golang.org/p/WaEfSLADHwL)!
+```
