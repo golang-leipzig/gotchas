@@ -146,12 +146,12 @@ import (
 
 func main() {
 	var (
-		a *int = new(int)
-		b      = &a
+		a = new(int)
+		b = &a
 	)
 	**b = 3
 	fmt.Printf("%d", *a***b)
 }
 ```
 
-Can you see the result? If not, just [try it out](https://play.golang.org/p/WaEfSLADHwL)!
+Can you see the result? If not, just [try it out](https://play.golang.org/p/G06tzZ2mJAO)!
