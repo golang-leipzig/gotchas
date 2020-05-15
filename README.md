@@ -158,7 +158,9 @@ Can you see the result? If not, just [try it out](https://play.golang.org/p/G06t
 
 ## Why is there no io.LimitWriter?
 
-We do not know exactly, but maybe the semantics around the limit are less clear when writing.
+We do not know exactly, but maybe the semantics around the limit are less clear
+when writing - or there [has not been enough
+demand](https://groups.google.com/d/msg/golang-nuts/FB4OtiRm28E/RI9-GHlecr4J).
 
 Kubernetes has an
 [ioutils](https://godoc.org/k8s.io/kubernetes/pkg/kubelet/util/ioutils)
