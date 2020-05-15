@@ -163,7 +163,7 @@ We do not know exactly, but maybe the semantics around the limit are less clear 
 Kubernetes has an
 [ioutils](https://godoc.org/k8s.io/kubernetes/pkg/kubelet/util/ioutils)
 package, which contains
-a [LimitWriter](https://github.com/kubernetes/kubernetes/blob/579e0c74c150085b3fac01f6a33b66db96922f93/pkg/kubelet/util/ioutils/ioutils.go#L39-L70).
+a [LimitWriter](https://github.com/kubernetes/kubernetes/blob/579e0c74c150085b3fac01f6a33b66db96922f93/pkg/kubelet/util/ioutils/ioutils.go#L39-L70). Minio has a [LimitWriter](https://github.com/minio/minio/blob/dfadf70a7f418798feab0cf013a7765f1adb21f5/pkg/ioutil/ioutil.go#L70-L113) as well.
 
 Illustrating the point above, currently an `ErrShortWrite` will be returned, if
 the limit is hit (in some previous version it was called `ErrMaximumWrite`).
