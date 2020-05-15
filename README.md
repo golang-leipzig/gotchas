@@ -155,3 +155,30 @@ func main() {
 ```
 
 Can you see the result? If not, just [try it out](https://play.golang.org/p/G06tzZ2mJAO)!
+
+## Why is there no io.LimitWriter?
+
+We do not know exactly, but maybe the semantics around the limit are less clear when writing.
+
+Kubernetes has an
+[ioutils](https://godoc.org/k8s.io/kubernetes/pkg/kubelet/util/ioutils)
+package, which contains
+a [LimitReader](https://github.com/kubernetes/kubernetes/blob/579e0c74c150085b3fac01f6a33b66db96922f93/pkg/kubelet/util/ioutils/ioutils.go#L39-L70).
+
+Illustrating the point above, currently an `ErrShortWrite` will be returned, if
+the limit is hit (in some previous version it was called `ErrMaximumWrite`).
+However, we could just stop writing without returning an error, so `io.Copy` would work:
+
+* [https://play.golang.org/p/LIs3CdFi59H](https://play.golang.org/p/LIs3CdFi59H)
+
+```go
+// Branch off a limited number of bytes from resp.Body into a buffer.
+var (
+    buf bytes.Buffer
+    tee = io.TeeReader(resp.Body, LimitWriter(&buf, 512))
+)
+if _, err := io.Copy(ioutil.Discard, tee); err != nil {
+	log.Fatal(err)
+}
+```
+
