@@ -184,3 +184,40 @@ if _, err := io.Copy(ioutil.Discard, tee); err != nil {
 }
 ```
 
+## Returning values from defer requires named result parameters
+
+In Go we often defer function calls, e.g. `defer f.Close()` after we opened a file or a `defer tx.Rollback()` to rollback a failed SQL transaction.
+But what if you want to return an error or result from a deferred function call?
+Consider this example where we want to add additional context to an error.  One might think that we can simply assign to `err` since it is in the closure of the deferred function.
+
+```go
+func g() error {
+    err := fmt.Errorf("new error")
+    defer func() {
+        err = fmt.Errorf("more context: %w", err)
+    }()
+    return err
+}
+```
+
+Surprisingly, this will return the unmodified error.
+
+[Effective Go#Recover](https://golang.org/doc/effective_go.html#recover) explains a simple panic recovery mechanism that points out what we are doing wrong:
+
+> ... deferred functions can modify named return values.
+
+After reading the section about [Defer statements in Go's language specification](https://golang.org/ref/spec#Defer_statements) it becomes pretty clear why we have to a named result parameter:
+
+> ... deferred functions are executed after any result parameters are set by that return statement but before the function returns to its caller.
+
+Here's a working example ([playground](https://play.golang.org/p/Sumi3P-bsUO)):
+
+```go
+func f() (err error) {
+    err = fmt.Errorf("new error")
+    defer func() {
+        err = fmt.Errorf("more context: %w", err)
+    }()
+    return err
+}
+```
