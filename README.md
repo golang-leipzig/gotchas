@@ -221,3 +221,18 @@ func f() (err error) {
     return err
 }
 ```
+
+## Dot or underscore prefixed files
+
+The go tools ignore files starting with either a `.` or an `_`, e.g. `_main.go` would not be considered by the Go tools.
+Folders called `testdata` are also ignored.  Here is the statement from Go's documentation:
+
+> Directory and file names that begin with "." or "_" are ignored by the go tool, as are directories named "testdata".
+
+[source](https://golang.org/cmd/go/#hdr-Package_lists_and_patterns)
+
+Note that `embed`, which was included with Go 1.16, also follows the behavior described above when determining which files to include.
+
+> If a pattern names a directory, all files in the subtree rooted at that directory are embedded (recursively), except that files with names beginning with ‘.’ or ‘_’ are excluded.
+
+[source](https://golang.org/pkg/embed/#hdr-Directives)
