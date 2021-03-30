@@ -8,6 +8,7 @@ Other lists and articles:
 * [Do you make these Go coding mistakes?](https://yourbasic.org/golang/gotcha/)
 * [Common Gotchas in Go](https://deadbeef.me/2018/01/go-gotchas)
 * [Dark Corners of Go](https://rytisbiel.com/2021/03/06/darker-corners-of-go/)
+* [Gotchas in the Go Network Packages Defaults](https://martin.baillie.id/wrote/gotchas-in-the-go-network-packages-defaults/)
 
 # Other gotchas and questions
 
