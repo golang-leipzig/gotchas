@@ -238,3 +238,9 @@ Note that `embed`, which was included with Go 1.16, also follows the behavior de
 > If a pattern names a directory, all files in the subtree rooted at that directory are embedded (recursively), except that files with names beginning with ‘.’ or ‘_’ are excluded.
 
 [source](https://golang.org/pkg/embed/#hdr-Directives)
+
+## `filepath.Clean` only works on absolute paths
+
+Let's say you implement a file server and thus need to map a request URL path to local path, e.g. `https://<some-domain>/some/file` should serve `/<some-base-directory>/some/file`.  Without cleaning up the request path you will be open to [path-traversal attacks](https://owasp.org/www-community/attacks/Path_Traversal).  That means if someone requests `https://<some-domain>/../../../etc/passwd` your server will happily respond with `passwd` (if it has permission to read it).  To prevent this problem you can just do a `filepath.Clean(req.URL.Path)`, **but**, this will not work if `req.URL.Path` is not absolute.  So, when using `filepath.Clean` make sure that the path you're passing into is absolute, when in doubt just add a `/` in front.
+
+[playground](https://play.golang.org/p/Q-qKnLVrh0P)
