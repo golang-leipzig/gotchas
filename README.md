@@ -238,3 +238,57 @@ Note that `embed`, which was included with Go 1.16, also follows the behavior de
 > If a pattern names a directory, all files in the subtree rooted at that directory are embedded (recursively), except that files with names beginning with ‘.’ or ‘_’ are excluded.
 
 [source](https://golang.org/pkg/embed/#hdr-Directives)
+
+## `filepath.Clean` only works on absolute paths
+
+Let's say you implement a file server and thus need to map a request URL path to local path, e.g. `https://<some-domain>/some/file` should serve `/<some-base-directory>/some/file`.  Without cleaning up the request path you will be open to [path-traversal attacks](https://owasp.org/www-community/attacks/Path_Traversal).  That means if someone requests `https://<some-domain>/../../../etc/passwd` your server will happily respond with `passwd` (if it has permission to read it).  To prevent this problem you can just do a `filepath.Clean(req.URL.Path)`, **but**, this will not work if `req.URL.Path` is not absolute.  So, when using `filepath.Clean` make sure that the path you're passing into is absolute, when in doubt just add a `/` in front.
+
+[playground](https://play.golang.org/p/Q-qKnLVrh0P)
+
+## `http.Client` is following up to 10 redirects by default
+
+It was surprising to me that `http.Client` and `http.DefaultClient` are following up to 10 redirects by default.
+I discovered this when doing a `HEAD` request on a resource that responds with a redirect, giving a 302 status code,
+and a `Location` header with the response.  But, with the `DefaultClient` you will receive a `200` instead, and no `Location` header of course.
+
+You can override the default behavior by setting a custom [`CheckRedirect` function in the client](https://pkg.go.dev/net/http#Client) like this:
+
+```go
+httpCl := http.DefaultClient
+httpCl.CheckRedirect = func(_ *http.Request, _ []*http.Request) error {
+        return http.ErrUseLastResponse
+}
+```
+
+Note that [`ErrUseLastResponse`](https://pkg.go.dev/net/http#ErrUseLastResponse) will just signal the client to stop following any more redirects.
+
+## `recover` won't catch panics in spawned goroutines
+
+This one is subtle and caused many servers to crash.
+One thing in advance, using a recovery middleware in your web server **won't** safe you!
+
+The following function will not recover and cause your program to crash:
+
+```go
+func wontRecover() {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("recovered from panic:", err)
+		}
+	}()
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		time.Sleep(1 * time.Second)
+		panic("panic'ed in goroutine")
+	}()
+
+	fmt.Println("waiting for goroutine to finish")
+	wg.Wait()
+}
+```
+
+Imagine `wontRecover` to be an `http.Handler` and you will see how widespread this problem is.
+The workaround is to `recover()` in any subroutine that might panic.
