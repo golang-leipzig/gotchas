@@ -292,3 +292,13 @@ func wontRecover() {
 
 Imagine `wontRecover` to be an `http.Handler` and you will see how widespread this problem is.
 The workaround is to `recover()` in any subroutine that might panic.
+
+## Fallthrough in a type switch
+
+Of the approximately 1400 sentences in
+[ref/spec](https://go.dev/ref/spec#Fallthrough_statements) about 9 mention
+"fallthrough" - and one [says](https://go.dev/ref/spec#Fallthrough_statements):
+
+>  The "fallthrough" statement is not permitted in a type switch.
+
+Which got a [few thousand people surprised](https://stackoverflow.com/questions/11531264/why-isnt-fallthrough-allowed-in-a-type-switch).
