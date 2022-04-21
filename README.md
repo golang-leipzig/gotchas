@@ -305,7 +305,7 @@ Which got a [few thousand people surprised](https://stackoverflow.com/questions/
 
 ## Clone *url.URL
 
-Consider the following function that reuses a base URL and creates instances of it, each with a different path.
+Consider the [following function](https://go.dev/play/p/thVT2Ck60Mh) that reuses a base URL and creates instances of it, each with a different path.
 
 ```go
 base := &url.URL{Scheme: "https", Host: "go.dev"}
