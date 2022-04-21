@@ -302,3 +302,36 @@ Of the approximately 1400 sentences in
 >  The "fallthrough" statement is not permitted in a type switch.
 
 Which got a [few thousand people surprised](https://stackoverflow.com/questions/11531264/why-isnt-fallthrough-allowed-in-a-type-switch).
+
+## Clone *url.URL
+
+Consider the following function that reuses a base URL and creates instances of it, each with a different path.
+
+```go
+base := &url.URL{Scheme: "https", Host: "go.dev"}
+paths := []string{"/play", "/doc", "/blog"}
+urls := make([]*url.URL, len(paths))
+
+for idx, path := range paths {
+        u := base
+        u.Path = path
+        urls[idx] = u
+}
+
+for _, u := range urls {
+        fmt.Println(u)
+}
+```
+
+What do you think the function will print?  It is **not** the following, which I had expected:
+
+```
+https://go.dev/play
+https://go.dev/doc
+https://go.dev/blog
+```
+
+In the loop `u := base` will not be a copy of the URL, since `base` is a pointer to `url.URL`.  Instead, `u` will just point to the same memory location as `base`.  There are two simple options for copying a `*url.URL`:
+
+1. create a new instance by parsing the stringified base URL `u, _ := url.Parse(base.String())`
+2. populate all fields manually: `u := &url.URL{Scheme: base.Scheme, Host: base.Host, Path: path}`
