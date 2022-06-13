@@ -335,3 +335,38 @@ In the loop `u := base` will not be a copy of the URL, since `base` is a pointer
 
 1. create a new instance by parsing the stringified base URL `u, _ := url.Parse(base.String())`
 2. populate all fields manually: `u := &url.URL{Scheme: base.Scheme, Host: base.Host, Path: path}`
+
+
+## Assignment in a type switch
+
+Does the following work? [Play](https://go.dev/play/p/xdWtaEjYG1L).
+
+```go
+package main
+
+import (
+    "io"
+    "os"
+)
+
+func main() {
+    var s io.Reader = os.Stdin
+    var v any
+    switch v = s.(type) {
+    case os.Stdin:
+        // ...
+    case *os.File:
+        // ...
+    default:
+        // ...
+    }
+}
+```
+
+Almost: the value of `v` only materializes in the switch - there is no point in
+fixing the type (even `any`) before the switch - in fact just using `v =
+s.(...` would be a syntax error.
+
+```
+./prog.go:13:11: syntax error: cannot use assignment (v) = (s.(type)) as value
+```
