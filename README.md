@@ -4,7 +4,7 @@ Go gotchas, surprises, puzzles.
 
 Other lists and articles:
 
-* [50 Shades of Go: Traps, Gotchas, and Common Mistakes for New Golang Devs](http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/)
+* [50 Shades of Go: Traps, Gotchas, and Common Mistakes for New Golang Devs](http://golang50shad.es/)
 * [Do you make these Go coding mistakes?](https://yourbasic.org/golang/gotcha/)
 * [Common Gotchas in Go](https://deadbeef.me/2018/01/go-gotchas)
 * [Dark Corners of Go](https://rytisbiel.com/2021/03/06/darker-corners-of-go/)
