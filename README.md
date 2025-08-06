@@ -370,3 +370,29 @@ s.(...` would be a syntax error.
 ```
 ./prog.go:13:11: syntax error: cannot use assignment (v) = (s.(type)) as value
 ```
+
+## Test cache
+
+Usually, you do not worry about cached test results (any change in the code
+triggers invalidation). But there is one situation where you would worry: if
+you are testing your unchanged code (client) code against a different external
+(server) implementation.
+
+Say you run `docker-compose` to bring up your test server and you run your go client against it. In that case, you may want to invalidate the cache manually:
+
+```
+$ go clean -testcache
+$ go test ...
+```
+
+Or even better:
+
+```
+$ go test -count=1 ...
+```
+
+Here's some background: [Why does -count=1 ignores caching in Go
+tests?](https://stackoverflow.com/questions/73432741/why-does-count-1-ignores-caching-in-go-tests)
+
+> The idiomatic way to disable test caching explicitly is to use -count=1. -- [cmd/go#hdr-Test_packages](https://pkg.go.dev/cmd/go#hdr-Test_packages)
+
